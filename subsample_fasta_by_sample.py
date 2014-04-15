@@ -78,7 +78,10 @@ def main():
     output_fasta = open(output_fp, "w")
     i = 0
     for label, seq in MinimalFastaParser(input_fasta):
-        matchID = re.match('(^.*?)_(.*)$',label)
+        try:
+            matchID = re.match('.*barcodelabel=(.*);',label)
+        except AttributeError:
+            matchID = re.match('(^.*?)_(.*)$',label)
         sampleID = matchID.group(1)
         prop = number_subsample / number_seqs_bySample[sampleID]
         if random() <= prop:
